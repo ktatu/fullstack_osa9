@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react"
 import { DiaryEntry, NewDiaryEntry, Weather, Visibility } from "./types"
 import { getAllDiaries, addDiary } from "./flightDiaryService"
+import axios from "axios"
 
 function App() {
     const [diaryEntries, setDiaryEntries] = useState<DiaryEntry[]>([])
+    const [errorMessage, setErrorMessage] = useState("")
 
     const [date, setDate] = useState("")
     const [weather, setWeather] = useState<Weather>(Weather.Sunny)
@@ -34,7 +36,13 @@ function App() {
                 setComment("")
             })
             .catch((error) => {
-                console.log("error: ", error)
+                if (axios.isAxiosError(error)) {
+                    if (error.response?.data) {
+                        setErrorMessage(error.response.data)
+                    } else {
+                        setErrorMessage("Something went wrong: adding diary failed")
+                    }
+                }
             })
     }
 
@@ -42,6 +50,9 @@ function App() {
         <div>
             <div>
                 <h2>Add new diary</h2>
+                <div>
+                    <h4 style={{ color: "red" }}>{errorMessage}</h4>
+                </div>
                 <form
                     method="post"
                     onSubmit={handleDiarySubmit}
@@ -109,7 +120,7 @@ function App() {
                         </div>
                         <div>
                             <input
-                                value="rainy"
+                                value={Weather.Rainy}
                                 onChange={(e) => setWeather(e.target.value as Weather)}
                                 name="weather"
                                 type="radio"
