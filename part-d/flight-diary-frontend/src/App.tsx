@@ -62,7 +62,7 @@ function App() {
                         <input
                             value={date}
                             onChange={(e) => setDate(e.target.value)}
-                            type="text"
+                            type="date"
                         />
                     </label>
                     <br />
@@ -155,16 +155,14 @@ function App() {
                             <span>windy</span>
                         </div>
                     </div>
-                    <br />
-                    <label>
-                        comment
+                    <div>
+                        <span>comment</span>
                         <input
                             value={comment}
                             onChange={(e) => setComment(e.target.value)}
                             type="text"
                         />
-                    </label>
-                    <br />
+                    </div>
                     <button type="submit">add</button>
                 </form>
             </div>
